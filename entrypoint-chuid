@@ -1,0 +1,14 @@
+#!/bin/sh
+# Change UID to the one from user
+set -e
+
+if [ `id -u node` != ${UID} ]; then
+	usermod -u ${UID} node
+fi
+if [ `id -g node` != ${GID} ]; then
+	groupmod -g ${GID} node
+fi
+
+# Call parent entrypoint
+exec "$@"
+
