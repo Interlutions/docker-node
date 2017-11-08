@@ -1,14 +1,22 @@
 #!/bin/sh
 # Change UID to the one from user
+# NOTE: You cannot change the uid of the running process, so this must happen as root. Use -e USERSPACE=1 instead of --user=www-data at docker-compose
 set -e
+USERNAME="node"
+GROUPNAME=${USERNAME}
 
-if [ `id -u node` != ${UID} ]; then
-	usermod -u ${UID} node
+if [ `id -u ${USERNAME}` != ${UID} ]; then
+	usermod -u ${UID} ${USERNAME}
 fi
-if [ `id -g node` != ${GID} ]; then
-	groupmod -g ${GID} node
+if [ `id -g ${GROUPNAME}` != ${GID} ]; then
+	groupmod -g ${GID} ${GROUPNAME}
 fi
 
-# Call parent entrypoint
-exec "$@"
-
+# Call parent entrypoint (as other user) when needed
+if [ ! -z ${USERSPACE} ]; then
+	# Downgrade to ${USERNAME}
+	sudo -u ${USERNAME} "$@"
+else
+	# Run as same user (root)
+	exec "$@"
+fi
