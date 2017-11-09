@@ -1,14 +1,20 @@
-FROM node:alpine
+FROM node
 
-# Install bower/yarn + grunt
-RUN npm install -g yarn bower grunt-cli
+# Install yarn + gulp
+RUN npm install -g yarn gulp
 
 # Install git (needed for bower)
-RUN apk add --no-cache git
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git && \
+	apt-get clean && \
+	rm -r /var/lib/apt/lists/*
 
 # Tools to change the uid on run
-RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories && \
-    apk add --no-cache shadow su-exec
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends sudo && \
+	apt-get clean && \
+	rm -r /var/lib/apt/lists/*
+
 COPY entrypoint-chuid /usr/local/bin
 ENTRYPOINT ["entrypoint-chuid"]
 
