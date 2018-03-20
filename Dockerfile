@@ -1,7 +1,7 @@
 FROM node
 
 # Install yarn + gulp
-RUN npm install -g yarn gulp
+RUN npm install -g gulp
 
 # Install git (needed for bower)
 RUN apt-get update && \
