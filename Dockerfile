@@ -1,4 +1,4 @@
-FROM node
+FROM node:9
 
 # Install yarn + gulp
 RUN npm install -g gulp
