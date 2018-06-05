@@ -7,18 +7,22 @@ USERNAME="node"
 GROUPNAME=${USERNAME}
 
 # Change uid of the user.
-if [ `id -u ${USERNAME}` != ${UID} ]; then
-	usermod -u ${UID} ${USERNAME}
+OLDUID=`id -u ${USERNAME}`
+if [ ${OLDUID} != ${UID} ]; then
+    usermod -u ${UID} ${USERNAME}
+    find / -xdev -user ${OLDUID} -exec chown ${UID} {} +
 fi
-if [ `id -g ${GROUPNAME}` != ${GID} ]; then
-	groupmod -g ${GID} ${GROUPNAME}
+OLDGID=`id -g ${GROUPNAME}`
+if [ ${OLDGID} != ${GID} ]; then
+    groupmod -g ${GID} ${GROUPNAME}
+    find / -xdev -group ${OLDGID} -exec chgrp ${GID} {} +
 fi
 
 # Call parent entrypoint (as other user) when needed
 if [ ! -z ${USERSPACE} ]; then
-	# Downgrade to ${USERNAME}
+    # Downgrade to ${USERNAME}
     sudo -u ${USERNAME} "$@"
 else
-	# Run as same user (root)
-	exec "$@"
+    # Run as same user (root)
+    exec "$@"
 fi
