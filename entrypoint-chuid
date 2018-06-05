@@ -8,12 +8,12 @@ GROUPNAME=${USERNAME}
 
 # Change uid of the user.
 OLDUID=`id -u ${USERNAME}`
-if [ `id -u ${OLDUID}` != ${UID} ]; then
+if [ ${OLDUID} != ${UID} ]; then
     usermod -u ${UID} ${USERNAME}
     find / -xdev -user ${OLDUID} -exec chown ${UID} {} +
 fi
 OLDGID=`id -g ${GROUPNAME}`
-if [ `id -g ${OLDGID}` != ${GID} ]; then
+if [ ${OLDGID} != ${GID} ]; then
     groupmod -g ${GID} ${GROUPNAME}
     find / -xdev -group ${OLDGID} -exec chgrp ${GID} {} +
 fi
