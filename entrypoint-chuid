@@ -10,12 +10,12 @@ GROUPNAME=${USERNAME}
 OLDUID=`id -u ${USERNAME}`
 if [ `id -u ${OLDUID}` != ${UID} ]; then
     usermod -u ${UID} ${USERNAME}
-    find / -user ${OLDUID} -exec chown ${UID} {} +
+    find / -xdev -user ${OLDUID} -exec chown ${UID} {} +
 fi
 OLDGID=`id -g ${GROUPNAME}`
 if [ `id -g ${OLDGID}` != ${GID} ]; then
     groupmod -g ${GID} ${GROUPNAME}
-    find /var/www -group ${OLDGID} -exec chgrp ${GID} {} +
+    find / -xdev -group ${OLDGID} -exec chgrp ${GID} {} +
 fi
 
 # Call parent entrypoint (as other user) when needed
