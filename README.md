@@ -1,2 +1,2 @@
 # docker-node
-Preconfigured node container with yarn, bower and grunt. Also has right uid/gid mapping
+Preconfigured node container with yarnand gulp using node 10 alpine. Also has right uid/gid mapping

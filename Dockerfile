@@ -1,10 +1,7 @@
-FROM node:alpine
+FROM node:10-alpine
 
 # Install bower/yarn + grunt
-RUN npm install -g yarn bower grunt-cli
-
-# Install git (needed for bower)
-RUN apk add --no-cache git
+RUN npm install -g yarn gulp
 
 # Tools to change the uid on run
 RUN echo http://dl-cdn.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories && \
